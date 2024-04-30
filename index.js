@@ -22,7 +22,10 @@ app.post('/users/login',checkSchema(userLoginValidationSchema),usersCltr.login)
 
 app.get('/users/account',authenticateUser,usersCltr.account)
 
-app.post('/api/task/add',TaskCltr.create)
+app.post('/api/task/add',authenticateUser,TaskCltr.create)
+app.get('/api/task/show',authenticateUser,TaskCltr.show)
+app.put('/api/task/update',authenticateUser,TaskCltr.update)
+
 // Start the server
 app.listen(port, () => {
     console.log('Server running on port', port);
