@@ -1,4 +1,4 @@
-const Task = require('../models/user-model');
+const Task = require('../models/task');
 
 const TaskCtrl = {};
 
