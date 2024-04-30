@@ -1,52 +1,40 @@
-const Task= require('../models/user-model')
-// const {validationResult} =require('express-validator')
-const TaskCltr ={}
+const Task = require('../models/user-model');
 
-TaskCltr.create=async(req,res)=>{
-// const errors= validationResult(req)
-// if(!errors.isEmpty()){
-//     return res.status(400).json({errors:errors.array()})
-// }
+const TaskCtrl = {};
 
-try{
-const body= req.body
-const task= new Task(body)
-// task.userId =req.user.userId
-await task.save()
-res.json(task)
-}catch(err){
-    console.log(err);
-    res.status(500).json({errors:"something went wrong "})
-}
-}
-
-
-TaskCltr.show = async (req, res) => {
+TaskCtrl.create = async (req, res) => {
     try {
-        // _id
-        const task = await Task.findOne({ userId: req.user.id }) 
-        res.json(task)
-    } catch(err) {
-        console.log(err)
-        res.status(500).json({ error: 'something went wrong'})
+        const body = req.body;
+        const task = new Task(body);
+        // Assuming req.user.userId contains the user ID for the task
+        task.userId = req.user.userId;
+        await task.save();
+        res.json(task);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: "Something went wrong" });
     }
 }
 
-
-TaskCltr.update = async (req, res) => {
-    const errors = validationResult(req) 
-    if(!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() })
-    } 
-    try { 
-        const body = req.body 
-        const task = await Task.findOneAndUpdate({ userId: req.user.id }, body, { new: true })
-        res.json(task)
-    } catch(err) {
-        console.log(err) 
-        res.status(500).json({ error: 'something went wrong'})
+TaskCtrl.show = async (req, res) => {
+    try {
+        const task = await Task.findOne({ userId: req.user.userId });
+        res.json(task);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: "Something went wrong" });
     }
 }
 
+TaskCtrl.update = async (req, res) => {
+    try {
+        const body = req.body;
+        const task = await Task.findOneAndUpdate({ userId: req.user.userId }, body, { new: true });
+        res.json(task);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: "Something went wrong" });
+    }
+}
 
-module.exports =TaskCltr
+module.exports = TaskCtrl;
